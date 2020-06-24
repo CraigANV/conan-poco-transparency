@@ -15,10 +15,10 @@ endif(USE_CONAN_PACKAGE)
 
 find_package(Poco REQUIRED COMPONENTS Foundation)
 
-add_executable(md5 ../main.cpp)
+add_executable(demo ../main.cpp)
 
 if(USE_CONAN_PACKAGE)
- target_link_libraries(md5 Poco::Poco)
+ target_link_libraries(demo Poco::Poco)
 else()
- target_link_libraries(md5 Poco::Foundation)
+ target_link_libraries(demo Poco::Foundation)
 endif(USE_CONAN_PACKAGE)

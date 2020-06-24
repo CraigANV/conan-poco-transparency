@@ -17,19 +17,24 @@ CMAKE_DIR="../"$1
 
 set -u
 
-readonly APT_PACKAGES="libpoco-dev"
+readonly APT_PACKAGES="libpoco-dev libcurl4-openssl-dev"
 
 # Build with Conan installed packages
+#sudo apt -y purge $APT_PACKAGES
+#sudo apt -y autoremove
 mkcd build
 conan install ..
 cmake $CMAKE_DIR -D USE_CONAN_PACKAGE=True
 cmake --build . --parallel 2
+./demo
 popd
 
 # Build without Conan packages
-mkcd build2
+#sudo apt -y install $APT_PACKAGES
+mkcd build
 cmake $CMAKE_DIR
 cmake --build . --parallel 2
+./demo
 popd
 
 printf "\n\n Building with and without Conan packages successfully\n"
