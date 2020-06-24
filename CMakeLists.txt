@@ -15,10 +15,20 @@ endif(USE_CONAN_PACKAGE)
 
 find_package(Poco REQUIRED COMPONENTS Foundation)
 
-add_executable(demo ../main.cpp)
+# TODO: double-colons is a common pattern used to namespace IMPORTED targets and ALIAS targets, it's not clear how
+# to create workaround targets for namespaced targets...
+#if(USE_CONAN_PACKAGE)
+# add_library(PocoFoundationWorkaround INTERFACE)
+# target_include_directories(PocoFoundationWorkaround INTERFACE ${Poco_INCLUDE_DIRS})
+# target_link_libraries(PocoFoundationWorkaround INTERFACE PocoFoundation)
+# add_library(Poco::Foundation ALIAS PocoFoundationWorkaround)
+#endif(USE_CONAN_PACKAGE)
 
 if(USE_CONAN_PACKAGE)
- target_link_libraries(demo Poco::Poco)
-else()
- target_link_libraries(demo Poco::Foundation)
+ add_library(PocoWorkaround INTERFACE)
+ target_link_libraries(PocoWorkaround INTERFACE Poco::Poco)
+ add_library(Poco::Foundation ALIAS PocoWorkaround)
 endif(USE_CONAN_PACKAGE)
+
+add_executable(demo ../main.cpp)
+target_link_libraries(demo Poco::Foundation)

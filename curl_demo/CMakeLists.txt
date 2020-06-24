@@ -10,10 +10,11 @@ endif(USE_CONAN_PACKAGE)
 
 find_package(CURL REQUIRED)
 
-add_executable(demo curldemo.cpp)
-
 if(USE_CONAN_PACKAGE)
-    target_link_libraries(demo CURL::CURL)
-else()
-    target_link_libraries(demo CURL::libcurl)
+    add_library(CurlWorkaround INTERFACE)
+    target_link_libraries(CurlWorkaround INTERFACE CURL::CURL)
+    add_library(CURL::libcurl ALIAS CurlWorkaround)
 endif(USE_CONAN_PACKAGE)
+
+add_executable(demo curldemo.cpp)
+target_link_libraries(demo CURL::libcurl)
