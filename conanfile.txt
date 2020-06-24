@@ -1,0 +1,7 @@
+[requires]
+poco/1.9.4
+
+[generators]
+cmake
+cmake_paths
+cmake_find_package
